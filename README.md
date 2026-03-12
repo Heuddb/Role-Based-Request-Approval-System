@@ -47,7 +47,7 @@ Employee → Manager → Finance → Admin
 ### Authentication
 
 POST /api/auth/signup  
-POST /api/auth/sign-in  
+POST /api/auth/signin  
 
 ---
 
@@ -85,9 +85,9 @@ Example:
 ---
 
 GET /api/request/getAllPendingRequest
-Fetch requests waiting for the logged-in role.
+Fetch requests waiting for approval only manger admin and hr can access this url.
 
-GET /api/request/your-request
+GET /api/request/my-request
 Fetch requests created by the logged-in user.
 
 ---

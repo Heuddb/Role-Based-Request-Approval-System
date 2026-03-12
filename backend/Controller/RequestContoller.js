@@ -136,7 +136,7 @@ const getAllPendingRequest = async (req, res, next) => {
   }
 };
 
-const getYourRequest = async (req, res) => {
+const getMyRequest = async (req, res) => {
   try {
     const user = req.user?._id;
 
@@ -197,4 +197,5 @@ module.exports = {
   createRequest,
   approveRequest,
   getAllPendingRequest,
+  getMyRequest
 };
