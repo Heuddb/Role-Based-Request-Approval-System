@@ -149,7 +149,9 @@ const getMyRequest = async (req, res) => {
 
     const requestDoc = await RequestModel.find({
       requestedBy: user,
-    });
+    })
+    .populate('workflow')
+    .lean(); // Add this!
 
     if (requestDoc.length === 0) {
       return res.status(404).json({
@@ -160,14 +162,25 @@ const getMyRequest = async (req, res) => {
 
     let status = requestDoc.map((reqItm) => {
       let message = "Pending approval";
+      
       if (reqItm.status === "approved") {
-        message = "your request was approved";
+        message = "Your request was approved";
       } else if (reqItm.status === "rejected") {
-        message = "your request was rejected";
+        message = "Your request was rejected";
       } else {
-        let nextStep = reqItm.workflow.steps[reqItm.currentStep];
-
-        if (nextStep) {
+        // With lean(), workflow is a plain object
+        const workflow = reqItm.workflow;
+        const currentStepIndex = reqItm.currentStep;
+        
+        // Check if workflow exists and has steps
+        if (workflow && 
+            workflow.steps && 
+            Array.isArray(workflow.steps) && 
+            currentStepIndex !== undefined && 
+            currentStepIndex >= 0 && 
+            currentStepIndex < workflow.steps.length) {
+          
+          const nextStep = workflow.steps[currentStepIndex];
           message = `Waiting for ${nextStep.role} approval`;
         }
       }
@@ -180,10 +193,11 @@ const getMyRequest = async (req, res) => {
         progress: message,
       };
     });
+
     return res.status(200).json({
       success: true,
       message: "Requests fetched successfully",
-      requestData: requestDoc,
+      requestData: status,
     });
   } catch (error) {
     return res.status(500).json({
@@ -192,7 +206,6 @@ const getMyRequest = async (req, res) => {
     });
   }
 };
-
 module.exports = {
   createRequest,
   approveRequest,
