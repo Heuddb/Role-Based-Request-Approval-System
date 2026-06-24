@@ -49,6 +49,23 @@ Employee → Manager → Finance → Admin
 POST /api/auth/signup  
 POST /api/auth/signin  
 
+Example:
+
+sign_up - 
+{
+  "name":"user",
+  "email":"user@gmail.com",
+  "role":"manager",
+  "password":"12345678"
+}
+
+
+sign_in -
+{
+  "email":"user@gmail.com",
+  "password":"12345678"
+}
+
 ---
 
 ### Workflow
