@@ -105,7 +105,6 @@ let sign_up = async (req, res, next) => {
   }
 };
 
-let forgot_password = async (req, res, next) => {};
 
 let sign_out = async (req, res, next) => {
   try {
