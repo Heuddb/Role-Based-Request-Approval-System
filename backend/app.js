@@ -8,7 +8,7 @@ const request = require('./Routes/requestRoute');
 const app = express();
 
 
-app.use(express.json());
+app.use(express.json());  
 
 app.use("/api/auth",auth)
 app.use("/api/workflow",workflow)
